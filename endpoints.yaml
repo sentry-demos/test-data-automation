@@ -4,7 +4,9 @@ react_endpoints:
  - https://neilmanvar-react-m3uuizd7iq-uc.a.run.app/toolstore
  - https://wcap-react-m3uuizd7iq-uc.a.run.app/toolstore
  - https://vu-react-m3uuizd7iq-uc.a.run.app/toolstore
+ - https://richardpropst-react-m3uuizd7iq-uc.a.run.app/toolstore
 backend_endpoints:
  - https://neilmanvar-flask-m3uuizd7iq-uc.a.run.app
  - https://wcap-flask-m3uuizd7iq-uc.a.run.app
  - https://vu-flask-m3uuizd7iq-uc.a.run.app 
+ - https://richardpropst-flask-m3uuizd7iq-uc.a.run.app
