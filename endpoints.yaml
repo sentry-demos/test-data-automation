@@ -7,6 +7,7 @@ react_endpoints:
  - https://richardpropst-react-m3uuizd7iq-uc.a.run.app/toolstore
  - https://adamtoth-fejel-react-m3uuizd7iq-uc.a.run.app/toolstore
  - https://dustinbailey-react-m3uuizd7iq-uc.a.run.app/toolstore
+ - https://aj-react-m3uuizd7iq-uc.a.run.app/
 backend_endpoints:
  - https://neilmanvar-flask-m3uuizd7iq-uc.a.run.app
  - https://wcap-flask-m3uuizd7iq-uc.a.run.app
@@ -14,3 +15,4 @@ backend_endpoints:
  - https://richardpropst-flask-m3uuizd7iq-uc.a.run.app
  - https://adamtoth-fejel-flask-m3uuizd7iq-uc.a.run.app
  - https://dustinbailey-flask-m3uuizd7iq-uc.a.run.app
+ - https://aj-flask-m3uuizd7iq-uc.a.run.app/
