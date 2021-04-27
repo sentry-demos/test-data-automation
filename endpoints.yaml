@@ -1,18 +1,16 @@
-# endpoints should NOT have "/" at the end
-
 react_endpoints:
+ - https://admin-react-m3uuizd7iq-uc.a.run.app/toolstore
  - https://neilmanvar-react-m3uuizd7iq-uc.a.run.app/toolstore
  - https://wcap-react-m3uuizd7iq-uc.a.run.app/toolstore
  - https://vu-react-m3uuizd7iq-uc.a.run.app/toolstore
- - https://richardpropst-react-m3uuizd7iq-uc.a.run.app/toolstore
  - https://adamtoth-fejel-react-m3uuizd7iq-uc.a.run.app/toolstore
  - https://dustinbailey-react-m3uuizd7iq-uc.a.run.app/toolstore
  - https://aj-react-m3uuizd7iq-uc.a.run.app/
 backend_endpoints:
+ - https://admin-flask-m3uuizd7iq-uc.a.run.app
  - https://neilmanvar-flask-m3uuizd7iq-uc.a.run.app
  - https://wcap-flask-m3uuizd7iq-uc.a.run.app
  - https://vu-flask-m3uuizd7iq-uc.a.run.app 
- - https://richardpropst-flask-m3uuizd7iq-uc.a.run.app
  - https://adamtoth-fejel-flask-m3uuizd7iq-uc.a.run.app
  - https://dustinbailey-flask-m3uuizd7iq-uc.a.run.app
- - https://aj-flask-m3uuizd7iq-uc.a.run.app/
+ - https://aj-flask-m3uuizd7iq-uc.a.run.app
