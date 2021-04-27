@@ -6,12 +6,13 @@ import sentry_sdk
 
 @pytest.mark.usefixtures("driver")
 def test_add_to_cart(driver):
-    sentry_sdk.set_tag("test", "test_add_to_cart")
+    sentry_sdk.set_tag("py_test", "test_add_to_cart")
     with open('endpoints.yaml', 'r') as stream:
         data_loaded = yaml.safe_load(stream)
         endpoints = data_loaded['react_endpoints']
 
     for endpoint in endpoints:
+        sentry_sdk.set_tag("endpoint", endpoint)
         reported = False
         for i in range(random.randrange(20)):
             driver.get(endpoint)
