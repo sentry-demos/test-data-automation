@@ -4,9 +4,9 @@ import yaml
 import random
 import sentry_sdk
 
+# If you print 'driver', it's not an object, it's "<selenium.webdriver.remote.webdriver.WebDriver (session="3955e7dab66c4172ad3d4a8808c0a67c")>"
 @pytest.mark.usefixtures("driver")
 def test_add_to_cart(driver):
-    # sentry_sdk.set_context("driver", driver) fails because it's not an object "<selenium.webdriver.remote.webdriver.WebDriver (session="3955e7dab66c4172ad3d4a8808c0a67c")>"
 
     sentry_sdk.set_tag("py_test", "test_add_to_cart")
     with open('endpoints.yaml', 'r') as stream:
@@ -21,6 +21,7 @@ def test_add_to_cart(driver):
 
         # TODO each of these rand20 has to be for a different endpoint
         for i in range(random.randrange(20)):
+            # TODO - Driver was loaded/running already (Selenium), now is pulling the web app in, which is served by the endpoint
             driver.get(endpoint)
 
             # Buttons not be available if tools did not load in time
@@ -37,9 +38,8 @@ def test_add_to_cart(driver):
                 reported = True
             time.sleep(random.randrange(3) + 3)
 
-        print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
         sentry_sdk.set_tag("clickedButtons", clickedButtons)
         sentry_sdk.set_tag("missedButtons", missedButtons)
         sentry_sdk.capture_message("Finished endpoint")
-        print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
+
     

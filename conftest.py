@@ -8,16 +8,17 @@ from selenium.webdriver.remote.remote_connection import RemoteConnection
 from dotenv import load_dotenv
 load_dotenv()
 DSN = os.getenv("DSN")
+ENV = os.getenv("ENV") or "production"
+print("ENV", ENV)
 print("DSN", DSN)
 
 import urllib3
 urllib3.disable_warnings()
 
-# TODO try without ENV in .env
 sentry_sdk.init(
     dsn= DSN,
     traces_sample_rate=0,
-    environment=os.getenv("ENV") or "production"
+    environment=ENV,
 )
 sentry_sdk.set_tag("demo-automation", "test-data-automation")
 
@@ -52,45 +53,25 @@ def pytest_generate_tests(metafunc):
                              ids=_generate_param_ids('broswerConfig', browsers),
                              scope='function')
 
-
 def _generate_param_ids(name, values):
     return [("<%s:%s>" % (name, value)).replace('.', '_') for value in values]
 
 
 """
-request.node.name is one of 4 elements from the 'browsers' array defined above
+request.node.name is one of 4 items from the 'browsers' array defined above
 "test_add_to_cart[<broswerConfig:{'seleniumVersion': '3_4_0', 'platform': 'Windows 10', 'browserName': 'chrome', 'version': 'latest'}>]"
 """
 @pytest.yield_fixture(scope='function')
 def driver(request, browser_config):
-    print("00000000")
-    print(type(request.node.name))
-    platform = ""
-    browserName = ""
-
-    if "windows" in request.node.name.lower():
-        platform = "Windows"
-    else:
-        platform = "OSX"
-
-    if "chrome" in request.node.name.lower():
-        browserName = "chrome"
-    if "firefox" in request.node.name.lower():
-        browserName = "firefox"
-    if "safari" in request.node.name.lower():
-        browserName = "safari"
-
-    print("browserName", browserName)
-    print("platform", platform)
-
-    # TODO .'.'.
-    # sentry_sdk.set_context("request.node.name", {
-    #     "request_node_name": request.node.name
-    # })
+    platform = parsePlatform(request.node.name)
+    browserName = parseBrowserName(request.node.name)
 
     sentry_sdk.set_tag("platform", platform)
-    sentry_sdk.set_tag("browserName", browserName")
-    sentry_sdk.capture_message("Started Pytest")
+    sentry_sdk.set_tag("browserName", browserName)
+    sentry_sdk.set_context("request.node.name", {
+        "request_node_name": request.node.name
+    })
+    sentry_sdk.capture_message("Started Pytest for %s - %s" % (platform, browserName))
 
     # if the assignment below does not make sense to you please read up on object assignments.
     # The point is to make a copy and not mess with the original test spec.
@@ -126,7 +107,7 @@ def driver(request, browser_config):
         sentry_sdk.capture_message("Never created - case test failed: %s %s" % (browser.session_id, test_name))
         raise WebDriverException("Never created!")
 
-    # TODO this is where the test is run?
+    # TODO this is where the test is run? it's blocking here?
     yield browser
 
     # Teardown starts here
@@ -142,7 +123,7 @@ def driver(request, browser_config):
     browser.execute_script("sauce:job-result={}".format(sauce_result))
     browser.quit()
 
-    # if the test errors on not finding a button, then will this line execute?
+    # TODO if the test errors on not finding a button, then will this line execute?
     # sentry_sdk.capture_message("Finished browser.quit()")
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
@@ -156,3 +137,20 @@ def pytest_runtest_makereport(item, call):
     # be "setup", "call", "teardown"
     setattr(item, "rep_" + rep.when, rep)
 
+
+def parsePlatform(requestNodeName):
+    platform = ""
+    if "windows" in requestNodeName.lower():
+        platform = "Windows"
+    else:
+        platform = "OSX"
+    return platform
+def parseBrowserName(requestNodeName):
+    browserName = ""
+    if "chrome" in requestNodeName.lower():
+        browserName = "chrome"
+    if "firefox" in requestNodeName.lower():
+        browserName = "firefox"
+    if "safari" in requestNodeName.lower():
+        browserName = "safari"
+    return browserName
