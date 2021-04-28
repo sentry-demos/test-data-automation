@@ -13,10 +13,11 @@ print("DSN", DSN)
 import urllib3
 urllib3.disable_warnings()
 
+# TODO try without ENV in .env
 sentry_sdk.init(
     dsn= DSN,
     traces_sample_rate=0,
-    environment="prod"
+    environment=os.getenv("ENV") or "production"
 )
 sentry_sdk.set_tag("demo-automation", "test-data-automation")
 
@@ -56,17 +57,46 @@ def _generate_param_ids(name, values):
     return [("<%s:%s>" % (name, value)).replace('.', '_') for value in values]
 
 
+"""
+request.node.name is one of 4 elements from the 'browsers' array defined above
+"test_add_to_cart[<broswerConfig:{'seleniumVersion': '3_4_0', 'platform': 'Windows 10', 'browserName': 'chrome', 'version': 'latest'}>]"
+"""
 @pytest.yield_fixture(scope='function')
 def driver(request, browser_config):
-    sentry_sdk.set_context("pytest", {
-        "request_node_name": request.node.name
-    })
-    sentry_sdk.capture_message("Started Pytest for node")
+    print("00000000")
+    print(type(request.node.name))
+    platform = ""
+    browserName = ""
+
+    if "windows" in request.node.name.lower():
+        platform = "Windows"
+    else:
+        platform = "OSX"
+
+    if "chrome" in request.node.name.lower():
+        browserName = "chrome"
+    if "firefox" in request.node.name.lower():
+        browserName = "firefox"
+    if "safari" in request.node.name.lower():
+        browserName = "safari"
+
+    print("browserName", browserName)
+    print("platform", platform)
+
+    # TODO .'.'.
+    # sentry_sdk.set_context("request.node.name", {
+    #     "request_node_name": request.node.name
+    # })
+
+    sentry_sdk.set_tag("platform", platform)
+    sentry_sdk.set_tag("browserName", browserName")
+    sentry_sdk.capture_message("Started Pytest")
 
     # if the assignment below does not make sense to you please read up on object assignments.
     # The point is to make a copy and not mess with the original test spec.
     desired_caps = dict()
     desired_caps.update(browser_config)
+    # Represents a specific browser
     test_name = request.node.name
     build_tag = environ.get('BUILD_TAG', None)
     tunnel_id = environ.get('TUNNEL_IDENTIFIER', None)
@@ -96,7 +126,9 @@ def driver(request, browser_config):
         sentry_sdk.capture_message("Never created - case test failed: %s %s" % (browser.session_id, test_name))
         raise WebDriverException("Never created!")
 
+    # TODO this is where the test is run?
     yield browser
+
     # Teardown starts here
     # report results
     # use the test result to send the pass/fail status to Sauce Labs
@@ -109,7 +141,9 @@ def driver(request, browser_config):
         sentry_sdk.capture_message("Sauce Result: %s" % (sauce_result))
     browser.execute_script("sauce:job-result={}".format(sauce_result))
     browser.quit()
-    sentry_sdk.capture_message("Finished browser.quit()")
+
+    # if the test errors on not finding a button, then will this line execute?
+    # sentry_sdk.capture_message("Finished browser.quit()")
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_makereport(item, call):
