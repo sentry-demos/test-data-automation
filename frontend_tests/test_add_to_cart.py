@@ -21,7 +21,8 @@ def test_add_to_cart(driver):
 
         # TODO each of these rand20 has to be for a different endpoint
         for i in range(random.randrange(20)):
-            # TODO - Driver was loaded/running already (Selenium), now is pulling the web app in, which is served by the endpoint
+            # TODO - Driver was loaded/running already (Selenium), now is pulling the web app in, which is served by the endpoint?
+            # TODO - can we call this once, before the for loop (and 3second sleep timeout...)?
             driver.get(endpoint)
 
             # Buttons not be available if tools did not load in time
