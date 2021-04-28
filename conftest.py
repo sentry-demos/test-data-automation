@@ -61,6 +61,7 @@ def _generate_param_ids(name, values):
 
 """
 request.node.name is one of 4 items from the 'browsers' array defined above
+it is not an object, it is a string that prints as:
 "test_add_to_cart[<broswerConfig:{'seleniumVersion': '3_4_0', 'platform': 'Windows 10', 'browserName': 'chrome', 'version': 'latest'}>]"
 """
 @pytest.yield_fixture(scope='function')
