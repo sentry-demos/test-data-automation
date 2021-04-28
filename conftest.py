@@ -22,6 +22,8 @@ sentry_sdk.init(
 )
 sentry_sdk.set_tag("demo-automation", "test-data-automation")
 
+# Error responses may be handled differently on the front-end depending which Browser is being used
+# e.g. TypeError: NetworkError when attempting to fetch resource. for get_tools
 browsers = [
     {
         "seleniumVersion": '3.4.0',
