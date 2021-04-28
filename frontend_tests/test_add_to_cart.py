@@ -39,8 +39,18 @@ def test_add_to_cart(driver):
                 reported = True
             time.sleep(random.randrange(3) + 3)
 
-        sentry_sdk.set_tag("clickedButtons", clickedButtons)
-        sentry_sdk.set_tag("missedButtons", missedButtons)
-        sentry_sdk.capture_message("Finished endpoint")
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_tag("clickedButtons", clickedButtons)
+            scope.set_tag("missedButtons", missedButtons)
+            msg = ""
+            if 'platform' in scope._tags:
+                msg = msg + scope._tags['platform']
+            if 'browserName' in scope._tags:
+                msg = msg + " - " + scope._tags['browserName']
+            if msg == "":
+                msg = "Finished Endpoint"
+            else:
+                msg = "Finished Endpoint: %s" % (msg)
+        sentry_sdk.capture_message(msg)
 
     
