@@ -116,3 +116,60 @@ Docs:
 Sentry docs:
 - https://docs.sentry.io/performance/distributed-tracing/
 - https://docs.sentry.io/performance/performance-metrics/
+
+
+
+
+https://pypi.org/project/pytest-xdist/
+
+https://www.tutorialspoint.com/pytest/pytest_run_tests_in_parallel.htm
+
+https://docs.pytest.org/en/2.1.0/xdist.html
+
+
+Properties on:
+```
+    sentry_sdk.set_context("pytest", {
+        "request_node_name": request.node.name
+    })
+    ```
+
+
+changed from -n 7 -n 10 to -n auto
+COULD TRY -n 2 and see if it does half?
+
+each -n starts a different browser (node) in saucelabs
+
+
+# runs a test for 1 browser only
+pytest -s -n 1 frontend_tests
+look at each 'started pytest' and each is a diff browser
+
+
+
+Is the test ever trying to call a page that has, "SyntaxError: syntactically invalid cod"
+
+
+Multiple endpoints for 1 browser -n?
+
+
+
+
+<!--
+Error: 500 - [object ReadableStream]
+error: [Errno 32] Broken pipe
+ -->
+
+
+
+ What is the limit to number of selenium vm's in grid we can trigger to run at once?
+
+
+ If there's an error/exception, does it flush the scope?
+
+
+Does setting -n 10 improve anything? Beyind -n 4?
+
+"process queue builds up too much, if things are failing..."
+
+SHOW what happens when it fails, does rest of code execute as normal?
