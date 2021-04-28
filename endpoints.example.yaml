@@ -1,0 +1,7 @@
+# endpoints should NOT have "/" at the end
+
+react_endpoints:
+ - https://<you>-react-m3uuizd7iq-uc.a.run.app/toolstore
+backend_endpoints:
+ - https://<you>-flask-m3uuizd7iq-uc.a.run.app
+
