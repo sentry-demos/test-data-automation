@@ -110,7 +110,7 @@ def driver(request, browser_config):
         sentry_sdk.capture_message("Never created - case test failed: %s %s" % (browser.session_id, test_name))
         raise WebDriverException("Never created!")
 
-    # TODO this is where the test is run? it's blocking here?
+    # This is the test running
     yield browser
 
     # Teardown starts here
@@ -126,8 +126,10 @@ def driver(request, browser_config):
     browser.execute_script("sauce:job-result={}".format(sauce_result))
     browser.quit()
 
-    # TODO if the test errors on not finding a button, then will this line execute?
-    # sentry_sdk.capture_message("Finished browser.quit()")
+    # If the test errors on not finding a button, then this should still execute
+    # because it's part of Teardown which always runs
+    sentry_sdk.set_tag("sessionId", browser.session_id)
+    sentry_sdk.capture_message("Session done")
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_makereport(item, call):
