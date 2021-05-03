@@ -6,9 +6,9 @@ import sentry_sdk
 
 # If you print 'driver', it's not an object, it's "<selenium.webdriver.remote.webdriver.WebDriver (session="3955e7dab66c4172ad3d4a8808c0a67c")>"
 @pytest.mark.usefixtures("driver")
-def test_add_to_cart(driver):
+def test_add_to_cart_2(driver):
 
-    sentry_sdk.set_tag("py_test", "test_add_to_cart")
+    sentry_sdk.set_tag("py_test", "test_add_to_cart_2")
     with open('endpoints.yaml', 'r') as stream:
         data_loaded = yaml.safe_load(stream)
         endpoints = data_loaded['react_endpoints']
@@ -19,9 +19,7 @@ def test_add_to_cart(driver):
         clickedButtons = 0
         missedButtons = 0
 
-        # TODO each of these rand20 has to be for a different endpoint
         for i in range(random.randrange(20)):
-            # TODO - Driver was loaded/running already (Selenium), now is pulling the web app in, which is served by the endpoint?
             # Loads the homepage
             driver.get(endpoint)
 

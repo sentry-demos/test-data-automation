@@ -121,6 +121,7 @@ Docs:
 - https://cloud.google.com/sdk/gcloud/reference/scheduler/jobs/create/
 - https://docs.travis-ci.com/user/triggering-builds/
 
-## Sentry Documentation
+## Additional Documentation
 - https://docs.sentry.io/performance/distributed-tracing/
 - https://docs.sentry.io/performance/performance-metrics/
+- https://www.seleniumeasy.com/python/pytest-run-webdriver-tests-in-parallel
