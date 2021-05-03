@@ -4,4 +4,6 @@ __pycache__
 .env
 nohup.out
 notes.txt
+endpoints1.yaml
+endpoints2.yaml
 endpoints.yaml
