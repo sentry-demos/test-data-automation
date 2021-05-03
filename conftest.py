@@ -112,6 +112,7 @@ def driver(request, browser_config):
 
     # This is the test running
     yield browser
+    session_id = browser.session_id
 
     # Teardown starts here
     # report results
@@ -119,7 +120,7 @@ def driver(request, browser_config):
     sauce_result = "failed" if request.node.rep_call.failed else "passed"
     if sauce_result == "failed":
         sentry_sdk.set_context("sauce_result", {
-            "browser_session_id": browser.session_id,
+            "browser_session_id": session_id,
             "test_name": test_name
         })
         sentry_sdk.capture_message("Sauce Result: %s" % (sauce_result))
@@ -128,7 +129,7 @@ def driver(request, browser_config):
 
     # If the test errors on not finding a button, then this should still execute
     # because it's part of Teardown which always runs
-    sentry_sdk.set_tag("sessionId", browser.session_id)
+    sentry_sdk.set_tag("sessionId", session_id)
     sentry_sdk.capture_message("Session done")
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
