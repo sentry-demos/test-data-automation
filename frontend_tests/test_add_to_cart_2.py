@@ -9,7 +9,7 @@ import sentry_sdk
 def test_add_to_cart_2(driver):
 
     sentry_sdk.set_tag("py_test", "test_add_to_cart_2")
-    with open('endpoints.yaml', 'r') as stream:
+    with open('endpoints2.yaml', 'r') as stream:
         data_loaded = yaml.safe_load(stream)
         endpoints = data_loaded['react_endpoints']
 
