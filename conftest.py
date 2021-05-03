@@ -129,7 +129,7 @@ def driver(request, browser_config):
 
     # If the test errors on not finding a button, then this should still execute
     # because it's part of Teardown which always runs
-    sentry_sdk.set_tag("sessionId", session_id)
+    sentry_sdk.set_tag("session_id", session_id)
     sentry_sdk.capture_message("Session done")
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
