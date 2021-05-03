@@ -1,1 +1,1 @@
-while true; do clear && pytest -s -n auto frontend_tests; done
+while true; do clear && pytest -s -n 8 frontend_tests; done
